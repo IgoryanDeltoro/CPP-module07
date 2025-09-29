@@ -1,18 +1,36 @@
 #include "iter.hpp"
-template <typename T>
 
-void display_stuff(const T &n) {
-    std::cout << n;
+class Awesome
+{
+  public:
+    Awesome( void ) : _n( 42 ) { return; }
+    int get( void ) const { return this->_n; }
+  private:
+    int _n;
+};
+
+std::ostream & operator<<( std::ostream & o, Awesome const & rhs )
+{
+  o << rhs.get();
+  return o;
 }
 
-int main()
+template< typename T >
+void print( T& x )
 {
-    std::cout << "\n=================================\n";
-    int dig[] = {0,1,2,3,4,5,6,7,8,9};
-    iter(dig, (sizeof(dig) / sizeof(dig[0])), display_stuff<int>);
+  std::cout << x << std::endl;
+  return;
+}
 
-    std::cout << "\n\n=================================\n";
-    const std::string str[] = {"Hello ", "World", "!", "\n"};
-    iter(str, sizeof(str) / sizeof(str[0]), display_stuff<std::string>);
-    return 0;
+int main() {
+  int digits[] = { 0, 1, 2, 3, 4 };
+  std::string names[] = { "Katrin", "Oleg", "Dragon"};
+
+  Awesome a[5];
+
+  iter(digits, sizeof(digits) / sizeof(digits[0]), print<const int>);
+  iter(names, sizeof(names) / sizeof(names[0]), print<std::string>);
+  iter(a, sizeof(a) / sizeof(a[0]), print<Awesome>);
+
+  return 0;
 }
